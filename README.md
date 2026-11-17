@@ -157,3 +157,18 @@ hand-built check of both chains, and five frozen predictions are in
    would only break even. At 15 gates it would give 4.5 - 1/9.
 
 Code: `lemma.py` (Lemma 3 as exact arithmetic) and `test_lemma.py`.
+
+## Search 4: the hard instance s* of bit addition (added 2026-11-17, pre-registered before its run)
+
+Goncharov, Kulikov and Levtsov's open problem 1 asks whether their bound
+4.5n - 2m for every bit-addition function can be improved. They name the instance
+that blocks it: s* = (0,0,0,0,1,1,2,2,...), that is X + Y + a + b, where their
+circuit costs 7 gates per weight (3.5n). The carry is then 0, 1 or 2. Search 4
+computes the exact minimum gates of one layer for every pair of 2-wire carry
+codes (9 classes, found by hand and checked by code). The minimum mean cycle of
+that 9 x 9 table is then the best rate of *any* layered circuit with 2-wire
+carries. Below 7 means an explicit circuit for s* under 3.5n; exactly 7 means a
+proved 3.5n - O(1) lower bound for that class of circuits. It also tries 3-wire
+codes and fused 2-layer blocks. Method, proof sketch and five frozen predictions
+are in [SEARCH4.md](SEARCH4.md). Code: `stagecore.py`, `solve_stage.py`,
+`job_stage.py`, `test_stagecore.py` (standalone; stdlib apart from PySAT).
