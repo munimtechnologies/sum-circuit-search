@@ -124,3 +124,15 @@ every block with up to 6 input wires that produces or consumes that code,
 including the MDFA analogues E+E -> P@0 + E@1. Full method, the hand
 classification and five frozen predictions are in [SEARCH2.md](SEARCH2.md).
 Code: `enccore.py`, `solve_enc.py`, `job_enc.py`, `test_enccore.py`.
+
+## Search 3: blocks that read two columns at once (added 2026-11-17, pre-registered before its run)
+
+Every known block reads one column; columns meet only through carries. Search 3
+tests every P/D block whose inputs come from two adjacent columns (both used,
+at most 6 input wires), against the same potentials 4.5 and 8. The potentials do
+not depend on the column, so the barrier lemma still applies. As long shots, it
+also asks for one gate fewer than the two tight fused MDFA chains across adjacent
+columns (8 input wires: 15 instead of 16 gates, 16 instead of 17). Method, a
+hand-built check of both chains, and five frozen predictions are in
+[SEARCH3.md](SEARCH3.md). Code: `job_twocol.py`, `test_twocol.py` (shares
+`enccore.py`, `solve_enc.py` and `known_blocks.py`).
