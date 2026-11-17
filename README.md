@@ -172,3 +172,19 @@ proved 3.5n - O(1) lower bound for that class of circuits. It also tries 3-wire
 codes and fused 2-layer blocks. Method, proof sketch and five frozen predictions
 are in [SEARCH4.md](SEARCH4.md). Code: `stagecore.py`, `solve_stage.py`,
 `job_stage.py`, `test_stagecore.py` (standalone; stdlib apart from PySAT).
+
+## Layered s* theory: pass-through layers and a conservation law (added 2026-11-17, before search 4's results)
+
+[THEORY-SSTAR.md](THEORY-SSTAR.md) gives the full proof of the cut argument
+behind search 4. It also shows that a layer may pass a carry wire straight
+through. A full adder alone is then a complete 5-gate layer from the binary
+carry code to two plain bits. Nine hand-built layers between the three main
+codes (two plain bits, the pair code, binary) all cost exactly
+7 + phi(out) - phi(in), where phi = 0, 1, 2 is the cost of packing two plain
+bits into each code. Four of the nine are our own (simple) constructions. Every chain of them costs exactly
+7 gates per weight. If that conservation law holds on the whole table, no
+layered circuit with 2-wire carries beats 3.5n on s*.
+[SEARCH4-ADDENDUM.md](SEARCH4-ADDENDUM.md) registers this as prediction H1
+before any result. It also records that search 4's P5 is already known to fail.
+`verify_layers.py` checks all nine layers and 363 chains exhaustively (stdlib
+only).
