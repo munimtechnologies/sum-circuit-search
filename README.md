@@ -114,3 +114,13 @@ are the next versions of this search.
 - `test_sumcore.py`: stdlib unit tests
 
 Run: `pip install -r requirements.txt && python -m unittest -v && python job.py --out-dir out`
+
+## Search 2: new 3-bit encodings (added 2026-11-17, pre-registered before its run)
+
+Search 2 asks whether new *encodings* help. There are exactly five XOR-linear
+3-bit codes that are not built from P and D (for example (p, p^q, p^r)). For
+each one, the job finds its potential from exact creation costs. It then tests
+every block with up to 6 input wires that produces or consumes that code,
+including the MDFA analogues E+E -> P@0 + E@1. Full method, the hand
+classification and five frozen predictions are in [SEARCH2.md](SEARCH2.md).
+Code: `enccore.py`, `solve_enc.py`, `job_enc.py`, `test_enccore.py`.
