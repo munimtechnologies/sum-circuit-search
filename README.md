@@ -51,6 +51,12 @@ strictly less than phi(in) - phi(out). Conversely, a profitable block means the
 LP over block compositions has value below 4.5. An explicit SUM_n construction
 would then confirm the new constant. That step is done only if one is found.
 
+*Correction added 2026-11-17, before any search result:* the "conversely"
+sentence holds for blocks that read one column. A block that reads two columns
+and needs extra plain bits at the higher weight beats 4.5n only under a stronger
+condition (gain > 0). [THEORY.md](THEORY.md) has the proofs and an explicit
+improvement for each case.
+
 The job lists every shape: inputs are any mix of P and D in one column with at
 most 6 wires; outputs are any P and D groups that can hold every possible total
 and leave a positive potential drop. For each shape, s_max is the largest size
@@ -136,3 +142,18 @@ columns (8 input wires: 15 instead of 16 gates, 16 instead of 17). Method, a
 hand-built check of both chains, and five frozen predictions are in
 [SEARCH3.md](SEARCH3.md). Code: `job_twocol.py`, `test_twocol.py` (shares
 `enccore.py`, `solve_enc.py` and `known_blocks.py`).
+
+## Theory: what a cheaper block would buy (added 2026-11-17, before any result)
+
+[THEORY.md](THEORY.md) proves three things:
+1. An exact accounting identity: size = 4.5n - phi(final) - (sum of slacks).
+2. The barrier: if no block is profitable, every composition needs at least
+   4.5n - O(log n) gates.
+3. A construction lemma with an explicit gain. A profitable one-column block
+   with at most 6 input wires would give size(SUM_n) <= (4.5 - 1/12)n + O(log n)
+   or better. A two-column block that needs delta extra plain bits at the higher
+   weight helps only if its slack exceeds delta/2, because each such bit costs
+   half a gate (full adder or Stockmeyer). So the second long shot at 16 gates
+   would only break even. At 15 gates it would give 4.5 - 1/9.
+
+Code: `lemma.py` (Lemma 3 as exact arithmetic) and `test_lemma.py`.

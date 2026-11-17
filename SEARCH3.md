@@ -72,10 +72,9 @@ void.
   >= 0.6).
 - **P5.** Neither long shot finds a circuit (sat == false for both).
 
-If P1 or P5 fails, the circuit is re-verified by hand on every input row and
-then built into an explicit SUM_n construction. Gates and the constant are
-counted for n up to 10^4 in a separate, pre-registered job before anything is
-claimed.
+If P1 or P5 fails, the circuit is re-verified by hand and then built into an
+explicit SUM_n construction. Gates and the constant are counted for n up to
+10^4 in a separate, pre-registered job before anything is claimed.
 
 **What would be remarkable:** a profitable two-column block, or a 15-gate fused
 MDFA chain, would be the first building block for counting bits that beats the
@@ -83,6 +82,22 @@ MDFA chain, would be the first building block for counting bits that beats the
 for SUM_n and every symmetric Boolean function. If P1 holds, the barrier says
 that fusing two adjacent columns does not help at up to 6 input wires. Any new
 block then needs more wires, more columns or a new encoding.
+
+## Note added 2026-11-17 ~17:00 UTC, before any result (the predictions above are unchanged)
+
+The Method says a profitable block makes "the LP over block compositions" fall
+below 4.5. [THEORY.md](THEORY.md) (Lemma 3) shows this needs one more condition
+for two-column blocks. A block that consumes delta more plain weight-1 bits than
+it emits must pay for them. The cheapest known source, a full adder or
+Stockmeyer's block, costs half a gate each, so the block beats 4.5n by Lemma 3
+only if slack > delta/2. When this search is graded, every profitable block is
+listed with its delta and Lemma 3's gain/R (`lemma.py`). P1 is still graded on
+n_profitable exactly as frozen. For the long shots:
+- `mdfa_then_mdfa` has delta = 0, so a 15-gate circuit would give
+  gamma <= 4.5 - 1/9.
+- `mdfa_then_pair_mdfa` has delta = 2, so the 16-gate circuit this job asks for
+  would break even under Lemma 3 (gain 0). It would beat 4.5n only together
+  with a slack-0 source of plain weight-1 bits, and we know of none.
 
 ## Files
 
