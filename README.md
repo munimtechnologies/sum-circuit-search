@@ -188,3 +188,28 @@ layered circuit with 2-wire carries beats 3.5n on s*.
 before any result. It also records that search 4's P5 is already known to fail.
 `verify_layers.py` checks all nine layers and 363 chains exhaustively (stdlib
 only).
+
+## The round-trip barrier: the conservation law proved without SAT (added 2026-11-18, before search 4's results)
+
+[THEORY-ROUNDTRIP.md](THEORY-ROUNDTRIP.md) proves the conservation law for
+every layered s* circuit whose carry codes are cheap to enter and leave. Put a
+circuit that packs two plain bits u, v into code A in front of any layer
+A -> B, and a decoder for B behind it. The result computes the binary sum of
+x, y, u, v, which needs 9 gates (size(SUM_4) = 9). So
+
+    pack(A) + cost(A -> B) + dec(B) >= 9,
+
+and a layered circuit with L layers has at least 9L minus the sum of
+pack + dec over its inner cuts. For the three main codes, pack + dec = 2, so the
+bound is 7L + 2. Our hand-built chains have exactly 7L + 2 gates, so they are
+optimal among such circuits, with any number of carry wires. This proves H1
+from one known fact (size(SUM_4) = 9), before search 4 reports. It also shows
+where a sub-3.5n layered circuit would have to live: in codes with
+pack + dec >= 3 (six of the nine 2-wire classes). `roundtrip.py` computes
+pack and dec for all 60 two-wire carry tables by brute force and checks the
+nine 9-gate SUM_4 "sandwiches" (stdlib; test `test_roundtrip.py`).
+`job_sum4.py` (queued as job `sum4-sandwich-v1`) re-proves size(SUM_4) = 9
+with the SAT encoder and tries the two-layer version, which would remove the
+pack + dec condition at every other cut. *Correction:* arXiv:2102.12579 (cited
+above as "Kulikov and Slezkin") has three authors: Kulikov, Pechenev and
+Slezkin.
