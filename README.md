@@ -213,3 +213,27 @@ with the SAT encoder and tries the two-layer version, which would remove the
 pack + dec condition at every other cut. *Correction:* arXiv:2102.12579 (cited
 above as "Kulikov and Slezkin") has three authors: Kulikov, Pechenev and
 Slezkin.
+
+## The block sandwich for SUM_n (added 2026-11-19, before any search result)
+
+[THEORY-BLOCKS.md](THEORY-BLOCKS.md) applies the same trick to the main
+question. Put a pairing XOR in front of every D input of a block and a decoder
+behind its outputs, and the result computes SUM_k. With the potentials 4.5 and
+8 this gives slack(B) <= 9k/2 - size(SUM_k) - phi(out) + DEC(out) for any mix of
+P and D inputs. Findings, none checked by a human yet:
+- All six known blocks (pairing XOR, unpair, full adder, Stockmeyer, MDFA',
+  MDFA) meet this bound with equality. Each one, wrapped this way, is an
+  optimal SUM_2 to SUM_5 circuit.
+- No "reduced" one-column block (one plain bit at weight 0 plus one carry
+  group at weight 1) on at most 5 input wires is profitable. This follows from
+  size(SUM_k) = 2, 5, 9, 11 alone. It also implies the lower-bound parts of
+  search 1's C1 and P1-P3 (found after they were registered, before any
+  result).
+- On 6 input wires, a profitable reduced block exists if and only if
+  size(SUM_6) <= 13. The exact value is open, and the best published upper
+  bound is 16.
+
+`blocks_sandwich.py` checks every number exhaustively (stdlib; test
+`test_blocks_sandwich.py`). `job_sum56.py` (queued as job `sum56-exact-v1`)
+re-proves size(SUM_5) = 11 and asks the SAT solver about SUM_6 at 16, 15, 14
+and 13 gates. The predictions in THEORY-BLOCKS.md were frozen before it ran.
