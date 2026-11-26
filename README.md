@@ -237,3 +237,26 @@ P and D inputs. Findings, none checked by a human yet:
 `test_blocks_sandwich.py`). `job_sum56.py` (queued as job `sum56-exact-v1`)
 re-proves size(SUM_5) = 11 and asks the SAT solver about SUM_6 at 16, 15, 14
 and 13 gates. The predictions in THEORY-BLOCKS.md were frozen before it ran.
+
+## Does counting 6 bits need 14 gates? (added 2026-11-24, before any result)
+
+[THEORY-SUM6.md](THEORY-SUM6.md) shows size(SUM_6) >= 13 by one standard
+gate-elimination step, so the 6-wire question above is exactly "is
+size(SUM_6) = 13?". It proves rules that any 13-gate SUM_6 circuit must obey
+(every input read by at most two gates; a gate that fixing one input makes
+constant has one reader, and that input is read nowhere else). Job
+`sum6-lb-v1` (`sum6rules.py`, `job_sum6lb.py`, `test_sum6rules.py`) first
+checks the rules on 11-gate SUM_5 circuits, which exist, then asks for a
+13-gate SUM_6 circuit under them. Nine predictions were frozen before it ran.
+
+## A shorter road: the constant-1 step (added 2026-11-26, before any result)
+
+[THEORY-SUM6-ADDENDUM.md](THEORY-SUM6-ADDENDUM.md) runs the same elimination
+step with the input fixed to 1 instead of 0. That gives
+size(SUM_6) >= size(F(5,1)) + 2, where F(5,1) is 1 + (number of ones among
+5 bits) in binary. So if F(5,1) has no circuit of at most 11 gates, counting
+6 bits needs at least 14 gates, and no reduced 6-wire block beats 4.5n. That
+is a 5-input SAT question instead of a 6-input one. The note also gives a
+duality between F(k, c) and F(k, 7 - k - c), a 9-gate circuit for F(4,1),
+two consistency checks for `sum6-lb-v1`, and six frozen predictions. Job
+`f51-direct-v1` (`job_f51.py`, `test_f51.py`) runs it with long time limits.
